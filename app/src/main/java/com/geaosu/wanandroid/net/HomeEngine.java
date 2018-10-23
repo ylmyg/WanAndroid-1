@@ -9,7 +9,7 @@ import com.geaosu.wanandroid.manager.Constant;
 public class HomeEngine extends BaseEngine {
 
     public HomeEngine() {
-        super(Constant.HOME_LIST_URL);
+        super(Constant.RequestUrl.HOME_LIST_URL);
     }
 
     @Override
