@@ -16,6 +16,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.geaosu.wanandroid.R;
+import com.geaosu.wanandroid.event.ClickEvent;
+import com.geaosu.wanandroid.event.DataEvent;
+import com.geaosu.wanandroid.event.LoginEvent;
 import com.geaosu.wanandroid.fragment.FunctionFragment;
 import com.geaosu.wanandroid.fragment.HomeFragment;
 import com.geaosu.wanandroid.fragment.MeFragment;
@@ -105,6 +108,21 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void loadData() {
+
+    }
+
+    @Override
+    protected void onEventMainThread(LoginEvent event) {
+
+    }
+
+    @Override
+    protected void onEventMainThread(DataEvent event) {
+
+    }
+
+    @Override
+    protected void onEventMainThread(ClickEvent event) {
 
     }
 

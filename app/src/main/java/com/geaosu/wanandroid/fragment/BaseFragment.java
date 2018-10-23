@@ -10,6 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.geaosu.wanandroid.event.ClickEvent;
+import com.geaosu.wanandroid.event.DataEvent;
+import com.geaosu.wanandroid.event.LoginEvent;
+
 /**
  * by: geaosu
  * fragment基类
@@ -72,4 +76,19 @@ public abstract class BaseFragment extends Fragment {
         this.mContext = context;
         this.mActivity = getActivity();
     }
+
+    /**
+     * 登录事件
+     */
+    protected abstract void onEventMainThread(LoginEvent event);
+
+    /**
+     * 请求返回事件
+     */
+    protected abstract void onEventMainThread(DataEvent event);
+
+    /**
+     * 点击事件
+     */
+    protected abstract void onEventMainThread(ClickEvent event);
 }

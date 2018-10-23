@@ -3,6 +3,10 @@ package com.geaosu.wanandroid.activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.geaosu.wanandroid.event.ClickEvent;
+import com.geaosu.wanandroid.event.DataEvent;
+import com.geaosu.wanandroid.event.LoginEvent;
+
 /**
  * by: geaosu
  */
@@ -54,5 +58,20 @@ public abstract class BaseActivity extends AppCompatActivity {
      * 加载数据
      */
     protected abstract void loadData();
+
+    /**
+     * 登录事件
+     */
+    protected abstract void onEventMainThread(LoginEvent event);
+
+    /**
+     * 请求事件
+     */
+    protected abstract void onEventMainThread(DataEvent event);
+
+    /**
+     * 点击事件
+     */
+    protected abstract void onEventMainThread(ClickEvent event);
 
 }
