@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">WanAndroid</string>
+    <string name="home">Home</string>
+    <string name="function">Function</string>
+    <string name="search">Search</string>
+    <string name="todo">Todo</string>
+    <string name="me">Me</string>
+</resources>
