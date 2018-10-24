@@ -94,6 +94,10 @@
     第5次更新
         1. 完善README说明文档内容;
 
+    第6次更新
+        1. 新增Gson转换库;
+        2. 更新README文档;
+
 
 
 
@@ -153,6 +157,15 @@
               public *;
             }
 
+    4. gson
+        des:
+            * GSON是一个Java库，用于将Java对象转换为JSON表示形式。
+            * 它还可以用来将JSON字符串转换成等效的Java对象。
+            * GSON可以使用任意Java对象，包括没有源代码的预先存在的对象。
+        GitHub: https://github.com/google/gson
+        依赖: implementation 'com.google.code.gson:gson:2.8.5'
+        jar包下载地址: https://search.maven.org/artifact/com.google.code.gson/gson/2.8.5/jar
+        混淆:
 
 
 #### 开源控件
