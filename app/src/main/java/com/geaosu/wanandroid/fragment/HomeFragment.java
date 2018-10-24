@@ -71,20 +71,20 @@ public class HomeFragment extends BaseFragment {
      * 初始化数据
      */
     private void initData() {
-        mImageUrlList.add("https://gss3.bdstatic.com/-Po3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike116%2C5%2C5%2C116%2C38/sign=01ec1dc417d5ad6ebef46cb8e0a252be/83025aafa40f4bfb281ab8540f4f78f0f63618e3.jpg");
-        mImageUrlList.add("https://gss2.bdstatic.com/9fo3dSag_xI4khGkpoWK1HF6hhy/baike/crop%3D0%2C2%2C786%2C519%3Bc0%3Dbaike92%2C5%2C5%2C92%2C30/sign=ecbf967fb4389b502cb0ba12b805c9ef/5fdf8db1cb134954d34d64055b4e9258d1094a04.jpg");
-        mImageUrlList.add("https://gss2.bdstatic.com/-fo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=8d92cde951afa40f28cbc68fca0d682a/023b5bb5c9ea15cec8b19ad2bd003af33b87b28a.jpg");
-        mImageUrlList.add("https://gss0.bdstatic.com/-4o3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike180%2C5%2C5%2C180%2C60/sign=45483f2430c79f3d9becec62dbc8a674/e7cd7b899e510fb383510d4cd233c895d0430ca4.jpg");
-        mImageUrlList.add("https://gss0.bdstatic.com/94o3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=7c2c3fed16950a7b613846966bb809bc/e61190ef76c6a7effe3fccfdf6faaf51f2de66cb.jpg");
-        mImageUrlList.add("https://gss2.bdstatic.com/-fo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=08ea591c9b529822113e3191b6a310ae/b2de9c82d158ccbf2248d0e112d8bc3eb0354170.jpg");
-        mImageUrlList.add("https://gss3.bdstatic.com/-Po3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike116%2C5%2C5%2C116%2C38/sign=c25f58d1682762d09433acedc185639f/bf096b63f6246b6067805586e0f81a4c500fa2b2.jpg");
-        mTitleList.add("ggg - " + 1);
-        mTitleList.add("ggg - " + 2);
-        mTitleList.add("ggg - " + 3);
-        mTitleList.add("ggg - " + 4);
-        mTitleList.add("ggg - " + 5);
-        mTitleList.add("ggg - " + 6);
-        mTitleList.add("ggg - " + 7);
+        mBannerImageUrlList.add("https://gss3.bdstatic.com/-Po3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike116%2C5%2C5%2C116%2C38/sign=01ec1dc417d5ad6ebef46cb8e0a252be/83025aafa40f4bfb281ab8540f4f78f0f63618e3.jpg");
+        mBannerImageUrlList.add("https://gss2.bdstatic.com/9fo3dSag_xI4khGkpoWK1HF6hhy/baike/crop%3D0%2C2%2C786%2C519%3Bc0%3Dbaike92%2C5%2C5%2C92%2C30/sign=ecbf967fb4389b502cb0ba12b805c9ef/5fdf8db1cb134954d34d64055b4e9258d1094a04.jpg");
+        mBannerImageUrlList.add("https://gss2.bdstatic.com/-fo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=8d92cde951afa40f28cbc68fca0d682a/023b5bb5c9ea15cec8b19ad2bd003af33b87b28a.jpg");
+        mBannerImageUrlList.add("https://gss0.bdstatic.com/-4o3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike180%2C5%2C5%2C180%2C60/sign=45483f2430c79f3d9becec62dbc8a674/e7cd7b899e510fb383510d4cd233c895d0430ca4.jpg");
+        mBannerImageUrlList.add("https://gss0.bdstatic.com/94o3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=7c2c3fed16950a7b613846966bb809bc/e61190ef76c6a7effe3fccfdf6faaf51f2de66cb.jpg");
+        mBannerImageUrlList.add("https://gss2.bdstatic.com/-fo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=08ea591c9b529822113e3191b6a310ae/b2de9c82d158ccbf2248d0e112d8bc3eb0354170.jpg");
+        mBannerImageUrlList.add("https://gss3.bdstatic.com/-Po3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike116%2C5%2C5%2C116%2C38/sign=c25f58d1682762d09433acedc185639f/bf096b63f6246b6067805586e0f81a4c500fa2b2.jpg");
+        mBannerTitleList.add("ggg - " + 1);
+        mBannerTitleList.add("ggg - " + 2);
+        mBannerTitleList.add("ggg - " + 3);
+        mBannerTitleList.add("ggg - " + 4);
+        mBannerTitleList.add("ggg - " + 5);
+        mBannerTitleList.add("ggg - " + 6);
+        mBannerTitleList.add("ggg - " + 7);
     }
 
     @Override
