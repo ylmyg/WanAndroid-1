@@ -13,14 +13,27 @@ import com.geaosu.wanandroid.event.ClickEvent;
 import com.geaosu.wanandroid.event.DataEvent;
 import com.geaosu.wanandroid.event.LoginEvent;
 import com.geaosu.wanandroid.utils.GlideImageLoader;
+import com.google.gson.Gson;
 import com.jwenfeng.library.pulltorefresh.BaseRefreshListener;
 import com.jwenfeng.library.pulltorefresh.PullToRefreshLayout;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class HomeFragment extends BaseFragment {
 
@@ -61,6 +74,13 @@ public class HomeFragment extends BaseFragment {
         mImageUrlList.add("https://gss0.bdstatic.com/94o3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=7c2c3fed16950a7b613846966bb809bc/e61190ef76c6a7effe3fccfdf6faaf51f2de66cb.jpg");
         mImageUrlList.add("https://gss2.bdstatic.com/-fo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=08ea591c9b529822113e3191b6a310ae/b2de9c82d158ccbf2248d0e112d8bc3eb0354170.jpg");
         mImageUrlList.add("https://gss3.bdstatic.com/-Po3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike116%2C5%2C5%2C116%2C38/sign=c25f58d1682762d09433acedc185639f/bf096b63f6246b6067805586e0f81a4c500fa2b2.jpg");
+        mTitleList.add("ggg - " + 1);
+        mTitleList.add("ggg - " + 2);
+        mTitleList.add("ggg - " + 3);
+        mTitleList.add("ggg - " + 4);
+        mTitleList.add("ggg - " + 5);
+        mTitleList.add("ggg - " + 6);
+        mTitleList.add("ggg - " + 7);
     }
 
     @Override
@@ -117,7 +137,54 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     protected void loadData() {
+        //构造okhttp客户端
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
+                .build();
 
+        //配置参数
+        HashMap<String, String> map = new HashMap<>();
+        map.put("userQQ", "819813992");
+        map.put("userName", "geaosu");
+        map.put("userMail", "geaosu@163.com");
+        map.put("userWeChat", "geaosu");
+
+        //将map转成json字符串
+        Gson gson = new Gson();
+        String json = gson.toJson(map);
+        //转换结果: "{"userWeChat":"geaosu","userQQ":"819813992","userName":"geaosu","userMail":"geaosu@163.com"}"
+
+        //MediaType  设置Content-Type 标头中包含的媒体类型值
+        RequestBody requestBody = FormBody.create(MediaType.parse("application/json; charset=utf-8"), json);
+
+        //请求地址
+        String url = "http://www.geaosu.com/app/user/updatainfo";
+
+        //构造请求
+        Request request = new Request.Builder()
+                .url(url)               //请求地址
+                .post(requestBody)      //请求方式: POST
+                .build();
+
+        //创建Call
+        Call call = okHttpClient.newCall(request);
+
+        //加入请求队列 ----->> 异步操作
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                //请求失败监听: 非ui线程-->>异步操作
+                System.out.println("连接失败");
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                //请求成功监听: 非ui线程-->>异步操作
+                System.out.println(response.body().string());
+            }
+        });
     }
 
     @Override
@@ -142,7 +209,7 @@ public class HomeFragment extends BaseFragment {
         View headView = View.inflate(mActivity, R.layout.home_list_head_view, null);
         Banner brBanner = (Banner) headView.findViewById(R.id.brBanner);
         //设置banner样式
-        brBanner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE);
+        brBanner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
         //设置图片加载器
         brBanner.setImageLoader(new GlideImageLoader());
         //设置图片集合
