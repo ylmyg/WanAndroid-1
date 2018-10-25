@@ -8,12 +8,8 @@ import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.geaosu.wanandroid.R;
 import com.geaosu.wanandroid.event.ClickEvent;
@@ -32,15 +28,15 @@ public class MainActivity extends BaseActivity {
     private RelativeLayout rlContent;
     private BottomNavigationView bvBottomActionBar;
 
-    private FragmentTransaction mFragmentTransaction;//fragment事务
-    private FragmentManager mFragmentManager;//fragment管理者
+    private FragmentTransaction mFragmentTransaction;       //fragment事务
+    private FragmentManager mFragmentManager;               //fragment管理者
 
     private HomeFragment mHomeFragment;
     private FunctionFragment mFunctionFragment;
     private SearchFragment mSearchFragment;
     private TodoFragment mTodoFragment;
     private MeFragment mMeFragment;
-    private int mCurrentItemIndex = 0;          //正在显示的item的小标, 启动时item的下标
+    private int mCurrentFragment = 0;                       //当前显示的fragment, 启动时需要显示的fragment
 
 
     @Override
@@ -52,7 +48,8 @@ public class MainActivity extends BaseActivity {
     protected void init(Bundle savedInstanceState) {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            mCurrentItemIndex = bundle.getInt("currentItem", 0);
+            //获取启动时需要显示的fragment的下标
+            mCurrentFragment = bundle.getInt("showFragment", 0);
         }
     }
 
@@ -113,24 +110,24 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void onEventMainThread(LoginEvent event) {
-
+        super.onEventMainThread(event);
     }
 
     @Override
     protected void onEventMainThread(DataEvent event) {
-
+        super.onEventMainThread(event);
     }
 
     @Override
     protected void onEventMainThread(ClickEvent event) {
-
+        super.onEventMainThread(event);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         //选中某个item: app启动默认打开me界面
-        switch (mCurrentItemIndex) {
+        switch (mCurrentFragment) {
             case 0:
                 bvBottomActionBar.setSelectedItemId(R.id.navigation_home);
                 break;
@@ -175,7 +172,7 @@ public class MainActivity extends BaseActivity {
      * 出处: https://blog.csdn.net/dl10210950/article/details/54889376/
      */
     private void showFragment(int index) {
-        mCurrentItemIndex = index;
+        mCurrentFragment = index;
         //开启事务
         mFragmentTransaction = mFragmentManager.beginTransaction();
         //显示之前将所有的fragment都隐藏起来,在去显示我们想要显示的fragment

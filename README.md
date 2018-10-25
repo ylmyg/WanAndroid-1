@@ -98,6 +98,13 @@
         1. 新增Gson转换库;
         2. 更新README文档;
 
+    第7次更新
+        1. 完善数据分发系统;
+        2. 完善EventBus数据处理;
+        3. 完善首页banner的所有逻辑处理;
+        4. 完善首页文章列表的展示和逻辑处理;
+        5. 更新README文档;
+
 
 
 
@@ -167,6 +174,20 @@
         jar包下载地址: https://search.maven.org/artifact/com.google.code.gson/gson/2.8.5/jar
         混淆:
 
+    5. AndroidViewAnimations
+        des: view动画收集项目
+        GitHub: https://github.com/daimajia/AndroidViewAnimations
+        依赖:
+            compile 'com.android.support:support-compat:25.1.1'
+            compile 'com.daimajia.easing:library:2.0@aar'
+            compile 'com.daimajia.androidanimations:library:2.3@aar'
+        jar包下载:
+        混淆:
+        使用:
+            YoYo.with(Techniques.Tada)
+                .duration(700)
+                .repeat(5)
+                .playOn(findViewById(R.id.edit_area));
 
 #### 开源控件
     1. pulltorefresh
@@ -222,6 +243,17 @@
         GitHub: https://github.com/youth5201314/banner
         依赖: implementation 'com.youth.banner:banner:1.4.10'
         混淆:
+            # glide 的混淆代码
+            -keep public class * implements com.bumptech.glide.module.GlideModule
+            -keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
+                **[] $VALUES;
+                public *;
+            }
+
+            # banner 的混淆代码
+            -keep class com.youth.banner.** {
+                *;
+            }
         使用:
             布局
                 <?xml version="1.0" encoding="utf-8"?>
@@ -244,6 +276,75 @@
                 brBanner.setDelayTime(1500);                                    //设置轮播时间
                 brBanner.setIndicatorGravity(BannerConfig.CENTER);              //设置指示器位置（当banner模式中有指示器时）
                 brBanner.start();                                               //banner设置方法全部调用完毕时最后调用
+
+                /**
+                 * 设置头布局
+                 */
+                private void setHeadView() {
+                    final LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    mArticleListHeadView = inflater.inflate(R.layout.home_article_list_head_view, null);
+                    //View headView = View.inflate(mActivity, R.layout.home_list_head_view, null);
+                    Banner banner = (Banner) mArticleListHeadView.findViewById(R.id.brBanner);
+                    //设置banner样式
+                    banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
+                    //设置图片加载器
+                    banner.setImageLoader(new GlideImageLoader());
+                    //设置图片集合
+                    banner.setImages(mBannerImageUrlList);
+                    //设置banner动画效果
+                    banner.setBannerAnimation(Transformer.DepthPage);
+                    //设置标题集合（当banner样式有显示title时）
+                    banner.setBannerTitles(mBannerTitleList);
+                    //设置自动轮播，默认为true
+                    banner.isAutoPlay(true);
+                    banner.setOnBannerListener(new OnBannerListener() {
+                        @Override
+                        public void OnBannerClick(int position) {
+                            if (mBannerUrlList.size() > 0) {
+                                String requestUrl = mBannerUrlList.get(position);
+                                if (requestUrl != null && requestUrl.length() > 0) {
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("requestUrl", requestUrl);
+
+                                    Intent intent = new Intent(mActivity, BrowserActivity.class);
+                                    intent.putExtra("data", bundle);
+                                    mActivity.startActivity(intent);
+
+                                    Log.d(getDebugTag(), "position = " + position + "  url = " + mBannerUrlList.get(position));
+                                }
+                            }
+                        }
+                    });
+                    //设置轮播时间
+                    banner.setDelayTime(2000);
+                    //设置指示器位置（当banner模式中有指示器时）
+                    banner.setIndicatorGravity(BannerConfig.CENTER);
+                    //banner设置方法全部调用完毕时最后调用
+                    banner.start();
+
+                    lvContent.addHeaderView(mArticleListHeadView);
+                }
+
+                /**
+                 * 清除头布局
+                 * 该方法用于刷新列表时使用的, 当请求到了新的数据时, 先调用clearHeadView方法移除头布局, 然后调用setHeadView新增头布局, 这样才能替换新数据成功;
+                 */
+                private void clearHeadView() {
+                    lvContent.removeHeaderView(mArticleListHeadView);
+                }
+
+#### 部分调用内容介绍
+    1. getRequestTag()方法
+        * 该方法位于IManager接口, BaseFragment类和BaseActivity类都实现了IManager接口, 并重写了getRequestTag()方法;
+        * 后面的BaseFragment类和BaseActivity类的子类直接调用getRequestTag()方法即可;
+
+
+
+
+
+
+
+
 
 
 

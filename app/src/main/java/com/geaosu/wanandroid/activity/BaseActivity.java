@@ -6,16 +6,26 @@ import android.support.v7.app.AppCompatActivity;
 import com.geaosu.wanandroid.event.ClickEvent;
 import com.geaosu.wanandroid.event.DataEvent;
 import com.geaosu.wanandroid.event.LoginEvent;
+import com.geaosu.wanandroid.interfaces.IManager;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * by: geaosu
  */
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity implements IManager {
+
+    private String mTag = null;
+    private long onlyTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getContentView());
+        EventBus.getDefault().register(this);
+        onlyTime = System.currentTimeMillis();
         init(savedInstanceState);
         initTitle();
         initTitleListener();
@@ -62,16 +72,40 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * 登录事件
      */
-    protected abstract void onEventMainThread(LoginEvent event);
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    protected void onEventMainThread(LoginEvent event) {
+    }
 
     /**
      * 请求事件
      */
-    protected abstract void onEventMainThread(DataEvent event);
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    protected void onEventMainThread(DataEvent event) {
+    }
 
     /**
      * 点击事件
      */
-    protected abstract void onEventMainThread(ClickEvent event);
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    protected void onEventMainThread(ClickEvent event) {
+    }
 
+    @Override
+    public String getRequestTag() {
+        if (mTag == null) {
+            mTag = getClass().getName() + "-" + getClass().hashCode() + onlyTime;
+        }
+        return mTag;
+    }
+
+    @Override
+    public String getDebugTag() {
+        return this.getClass().getName();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);//卸载事件监听
+    }
 }

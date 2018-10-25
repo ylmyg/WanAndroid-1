@@ -13,21 +13,30 @@ import android.view.ViewGroup;
 import com.geaosu.wanandroid.event.ClickEvent;
 import com.geaosu.wanandroid.event.DataEvent;
 import com.geaosu.wanandroid.event.LoginEvent;
+import com.geaosu.wanandroid.interfaces.IManager;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * by: geaosu
  * fragment基类
  */
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment implements IManager {
 
     protected Context mContext;
     protected Activity mActivity;
+    private String mTag = null;
+    private long onlyTime;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        init(savedInstanceState);
         View fragmentView = inflater.inflate(getContentView(), null);
+        EventBus.getDefault().register(this);
+        onlyTime = System.currentTimeMillis();
+        init(savedInstanceState);
         initTitle(fragmentView);
         initTitleListener();
         initView(fragmentView);
@@ -78,18 +87,43 @@ public abstract class BaseFragment extends Fragment {
         this.mActivity = getActivity();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);//卸载事件监听
+    }
+
     /**
      * 登录事件
      */
-    protected abstract void onEventMainThread(LoginEvent event);
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    protected void onEventMainThread(LoginEvent event) {
+    }
 
     /**
      * 请求返回事件
      */
-    protected abstract void onEventMainThread(DataEvent event);
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    protected void onEventMainThread(DataEvent event) {
+    }
 
     /**
      * 点击事件
      */
-    protected abstract void onEventMainThread(ClickEvent event);
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    protected void onEventMainThread(ClickEvent event) {
+    }
+
+    @Override
+    public String getRequestTag() {
+        if (mTag == null) {
+            mTag = getClass().getName() + "-" + getClass().hashCode() + onlyTime;
+        }
+        return mTag;
+    }
+
+    @Override
+    public String getDebugTag() {
+        return this.getClass().getName();
+    }
 }
