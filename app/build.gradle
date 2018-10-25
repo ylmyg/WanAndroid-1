@@ -35,4 +35,5 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'homhomlin.lib:sldinglayout:0.9.0'
     implementation 'com.nineoldandroids:library:2.4.0'
+    implementation 'com.blankj:utilcode:1.11.1'
 }

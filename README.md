@@ -109,7 +109,8 @@
         1. 新增网页浏览器;
         2. 新增网页浏览器下拉浏览器页展示开发者信息;
 
-
+    20181025-周四: 第3次提交
+        1. 新增工具类开源库;
 
 
 
@@ -178,7 +179,37 @@
         jar包下载地址: https://search.maven.org/artifact/com.google.code.gson/gson/2.8.5/jar
         混淆:
 
-    5.
+    5.utilcode
+        des:
+        GitHub: https://github.com/hoangkien0705/Android-UtilCode
+        依赖:
+            implementation 'com.blankj:utilcode:1.11.1'
+            implementation 'com.blankj:utilcode:1.5.1'
+        混淆:
+            -keep class com.blankj.utilcode.** { *; }
+            -keepclassmembers class com.blankj.utilcode.** { *; }
+            -dontwarn com.blankj.utilcode.**
+
+        使用:
+            1. 初始化: 在application的onCreate方法中调用如下方法
+                /**
+                 * 初始化blankj大神的utils工具
+                 */
+                private void initBlanKJUtils() {
+                    Utils.init(this);
+                }
+
+            2. 用自己想用的功能:
+                * 判断网络状态
+
+
+
+
+
+
+
+
+
 
 
    AndroidViewAnimations
