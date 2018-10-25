@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EBEBEB"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="16dp"
+        android:singleLine="true"
+        android:text="数据由 www.wanandroid.com 提供"
+        android:textAllCaps="false"
+        android:textColor="#008577"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="developed by geaosu"
+        android:textAllCaps="false"
+        android:textColor="#008577"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+</LinearLayout>

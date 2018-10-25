@@ -52,6 +52,7 @@ public class HomeFragment extends BaseFragment {
     private View mArticleListHeadView;                              //listview头布局
     private int mPager = 0;                                         //数据列表加载的页数
     private boolean mIsCanLoadMore;
+    private Banner mBanner;
 
     @Override
     protected int getContentView() {
@@ -237,6 +238,22 @@ public class HomeFragment extends BaseFragment {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mBanner != null) {
+            mBanner.startAutoPlay();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mBanner != null) {
+            mBanner.stopAutoPlay();
+        }
+    }
+
 
     /**
      * 设置头布局
@@ -245,20 +262,20 @@ public class HomeFragment extends BaseFragment {
         final LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mArticleListHeadView = inflater.inflate(R.layout.home_article_list_head_view, null);
         //View headView = View.inflate(mActivity, R.layout.home_list_head_view, null);
-        Banner banner = (Banner) mArticleListHeadView.findViewById(R.id.brBanner);
+        mBanner = (Banner) mArticleListHeadView.findViewById(R.id.brBanner);
         //设置banner样式
-        banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
+        mBanner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE_INSIDE);
         //设置图片加载器
-        banner.setImageLoader(new GlideImageLoader());
+        mBanner.setImageLoader(new GlideImageLoader());
         //设置图片集合
-        banner.setImages(mBannerImageUrlList);
+        mBanner.setImages(mBannerImageUrlList);
         //设置banner动画效果
-        banner.setBannerAnimation(Transformer.DepthPage);
+        mBanner.setBannerAnimation(Transformer.DepthPage);
         //设置标题集合（当banner样式有显示title时）
-        banner.setBannerTitles(mBannerTitleList);
+        mBanner.setBannerTitles(mBannerTitleList);
         //设置自动轮播，默认为true
-        banner.isAutoPlay(true);
-        banner.setOnBannerListener(new OnBannerListener() {
+        mBanner.isAutoPlay(true);
+        mBanner.setOnBannerListener(new OnBannerListener() {
             @Override
             public void OnBannerClick(int position) {
                 if (mBannerUrlList.size() > 0) {
@@ -277,11 +294,11 @@ public class HomeFragment extends BaseFragment {
             }
         });
         //设置轮播时间
-        banner.setDelayTime(2000);
+        mBanner.setDelayTime(2000);
         //设置指示器位置（当banner模式中有指示器时）
-        banner.setIndicatorGravity(BannerConfig.CENTER);
+        mBanner.setIndicatorGravity(BannerConfig.CENTER);
         //banner设置方法全部调用完毕时最后调用
-        banner.start();
+        mBanner.start();
 
         lvContent.addHeaderView(mArticleListHeadView);
     }

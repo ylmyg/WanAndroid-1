@@ -85,25 +85,29 @@
         6. 新增banner开源控件, 用于展示首页轮播图;
         7. 新增glide图片加载开源库, 用于apk内所有的图片加载操作;
 
-    第3次提交
+    20181024-周三: 第1次提交
         1. 新增EventBus开源库, 用于网络请求数据的分发和接收;
 
-    第4次更新
+    20181024-周三: 第2次提交
         1. 新增okhttp网络请求框架, 用于网络请求
 
-    第5次更新
+    20181024-周三: 第3次提交
         1. 完善README说明文档内容;
 
-    第6次更新
+    20181024-周三: 第4次提交
         1. 新增Gson转换库;
         2. 更新README文档;
 
-    第7次更新
+    20181025-周四: 第1次提交
         1. 完善数据分发系统;
         2. 完善EventBus数据处理;
         3. 完善首页banner的所有逻辑处理;
         4. 完善首页文章列表的展示和逻辑处理;
         5. 更新README文档;
+
+    20181025-周四: 第2次提交
+        1. 新增网页浏览器;
+        2. 新增网页浏览器下拉浏览器页展示开发者信息;
 
 
 
@@ -174,7 +178,10 @@
         jar包下载地址: https://search.maven.org/artifact/com.google.code.gson/gson/2.8.5/jar
         混淆:
 
-    5. AndroidViewAnimations
+    5.
+
+
+   AndroidViewAnimations
         des: view动画收集项目
         GitHub: https://github.com/daimajia/AndroidViewAnimations
         依赖:
@@ -188,6 +195,8 @@
                 .duration(700)
                 .repeat(5)
                 .playOn(findViewById(R.id.edit_area));
+
+
 
 #### 开源控件
     1. pulltorefresh
@@ -266,16 +275,16 @@
                 private List<String> mImageUrlList = new ArrayList<>();         //图片Url集合
                 private List<String> mTitleList = new ArrayList<>();            //图片标题集合
 
-                Banner brBanner = (Banner) headView.findViewById(R.id.brBanner);
-                brBanner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE);   //设置banner样式
-                brBanner.setImageLoader(new GlideImageLoader());                //设置图片加载器
-                brBanner.setImages(mImageUrlList);                              //设置图片集合
-                brBanner.setBannerAnimation(Transformer.DepthPage);             //设置banner动画效果
-                brBanner.setBannerTitles(mTitleList);                           //设置标题集合（当banner样式有显示title时）
-                brBanner.isAutoPlay(true);                                      //设置自动轮播，默认为true
-                brBanner.setDelayTime(1500);                                    //设置轮播时间
-                brBanner.setIndicatorGravity(BannerConfig.CENTER);              //设置指示器位置（当banner模式中有指示器时）
-                brBanner.start();                                               //banner设置方法全部调用完毕时最后调用
+                Banner banner = (Banner) headView.findViewById(R.id.brBanner);
+                banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE);   //设置banner样式
+                banner.setImageLoader(new GlideImageLoader());                //设置图片加载器
+                banner.setImages(mImageUrlList);                              //设置图片集合
+                banner.setBannerAnimation(Transformer.DepthPage);             //设置banner动画效果
+                banner.setBannerTitles(mTitleList);                           //设置标题集合（当banner样式有显示title时）
+                banner.isAutoPlay(true);                                      //设置自动轮播，默认为true
+                banner.setDelayTime(1500);                                    //设置轮播时间
+                banner.setIndicatorGravity(BannerConfig.CENTER);              //设置指示器位置（当banner模式中有指示器时）
+                banner.start();                                               //banner设置方法全部调用完毕时最后调用
 
                 /**
                  * 设置头布局
@@ -332,6 +341,86 @@
                 private void clearHeadView() {
                     lvContent.removeHeaderView(mArticleListHeadView);
                 }
+
+
+    3. sldinglayout
+       des: 顶部下拉展示开发者信息
+       GitHub: https://github.com/HomHomLin/SlidingLayout
+       依赖:
+           implementation 'homhomlin.lib:sldinglayout:0.9.0'
+           //如果你的项目需要支持API V9，你需要添加以下依赖
+           implementation 'com.nineoldandroids:library:2.4.0'
+
+       使用:
+           布局:
+               //author_info_layout_bg.xml  拉下来能看到的那部分开发者信息的布局
+               <?xml version="1.0" encoding="utf-8"?>
+               <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   android:background="#EBEBEB"
+                   android:orientation="vertical">
+
+                   <TextView
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:gravity="center"
+                       android:padding="16dp"
+                       android:singleLine="true"
+                       android:text="数据由 www.wanandroid.com 提供"
+                       android:textAllCaps="false"
+                       android:textColor="#008577"
+                       android:textSize="12sp"
+                       android:textStyle="bold" />
+
+                   <TextView
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:gravity="center"
+                       android:singleLine="true"
+                       android:text="developed by geaosu"
+                       android:textAllCaps="false"
+                       android:textColor="#008577"
+                       android:textSize="14sp"
+                       android:textStyle="bold" />
+               </LinearLayout>
+
+               //activity的布局
+               <?xml version="1.0" encoding="utf-8"?>
+               <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                   xmlns:tools="http://schemas.android.com/tools"
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   android:background="@color/colorPrimaryDark"
+                   android:orientation="vertical"
+                   tools:context=".activity.BrowserActivity">
+
+                   <include layout="@layout/action_bar_browser" />
+
+                   <!--显示开发者信息 不需要java代码-->
+                   <lib.homhomlib.design.SlidingLayout
+                       android:id="@+id/slidingLayout"
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                       app:background_view="@layout/author_info_layout_bg"
+                       app:sliding_mode="top"
+                       app:top_max="140dp">
+
+                       <WebView
+                           android:id="@+id/wbContent"
+                           android:layout_width="match_parent"
+                           android:layout_height="match_parent" />
+
+                   </lib.homhomlib.design.SlidingLayout>
+               </LinearLayout>
+
+
+
+
+
+#### shape图形
+    https://www.cnblogs.com/popfisher/p/6238119.html
 
 #### 部分调用内容介绍
     1. getRequestTag()方法

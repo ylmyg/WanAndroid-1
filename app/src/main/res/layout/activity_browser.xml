@@ -1,9 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
+    android:orientation="vertical"
     tools:context=".activity.BrowserActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <include layout="@layout/action_bar_browser" />
+
+    <!--显示开发者信息 不需要java代码-->
+    <lib.homhomlib.design.SlidingLayout
+        android:id="@+id/slidingLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:background_view="@layout/author_info_layout_bg"
+        app:sliding_mode="top"
+        app:top_max="140dp">
+
+        <WebView
+            android:id="@+id/wbContent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </lib.homhomlib.design.SlidingLayout>
+</LinearLayout>
