@@ -118,7 +118,7 @@ public class HomeFragment extends BaseFragment {
                     loadArticleData(mPager);
                 } else {
                     rfLayout.finishLoadMore();
-                    Toast.makeText(mActivity, "没有数据了", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mActivity, "没有更多数据了", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -212,19 +212,13 @@ public class HomeFragment extends BaseFragment {
                 if (articleModel != null) {
                     HomeArticleModel.DataBean data = articleModel.getData();
                     if (data != null) {
-                        int total = data.getTotal();
-                        int curPage = data.getCurPage();
-                        int size = data.getSize();
-                        if (curPage * size >= total) {
-                            mIsCanLoadMore = false;//没数据了, 不能加载更多了
-                        } else {
-                            mIsCanLoadMore = true;
-                        }
-
                         List<HomeArticleModel.DataBean.DatasBean> datas = data.getDatas();
-                        if (datas != null && datas.size() >= 0) {
+                        if (datas != null && datas.size() > 0) {
+                            mIsCanLoadMore = true;
                             mArticleList.addAll(datas);
                             mArticleListAdapter.replaceAll(mArticleList);
+                        } else {
+                            mIsCanLoadMore = false;
                         }
                     }
                 }

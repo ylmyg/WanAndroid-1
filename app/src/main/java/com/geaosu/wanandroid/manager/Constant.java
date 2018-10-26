@@ -25,7 +25,15 @@ public class Constant {
          * 方法：GET
          * 参数：页码，拼接在连接中，从0开始。
          */
-        String HOME_ARTICLE_URL ="http://www.wanandroid.com/article/list/";
+        String HOME_ARTICLE_URL = "http://www.wanandroid.com/article/list/";
+
+        /**
+         * 搜索热词:
+         *
+         * 方法：GET
+         *
+         */
+        String HOT_KEY_URL = "";
 
     }
 

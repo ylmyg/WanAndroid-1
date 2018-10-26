@@ -31,7 +31,27 @@ public class DataEvent {
         /**
          * 获取首页的文章列表 - 失败
          */
-        GET_HOME_ARTICLE_ERROR
+        GET_HOME_ARTICLE_ERROR,
+
+        /**
+         * 获取搜索热词 - 成功
+         */
+        GET_HOT_KEY_SUCCESS,
+
+        /**
+         * 获取搜索热词 - 失败
+         */
+        GET_HOT_KEY_ERROR,
+
+        /**
+         * 获取搜索热词 - 成功
+         */
+        GET_SEARCH_HOT_KEY_SUCCESS,
+
+        /**
+         * 获取搜索热词 - 失败
+         */
+        GET_SEARCH_HOT_KEY_ERROR
 
 
     }

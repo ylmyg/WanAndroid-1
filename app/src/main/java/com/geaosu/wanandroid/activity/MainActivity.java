@@ -75,10 +75,10 @@ public class MainActivity extends BaseActivity {
                     case R.id.navigation_home:
                         showFragment(0);
                         break;
-                    case R.id.navigation_search:
+                    case R.id.navigation_function:
                         showFragment(1);
                         break;
-                    case R.id.navigation_function:
+                    case R.id.navigation_search:
                         showFragment(2);
                         break;
                     case R.id.navigation_todo:
