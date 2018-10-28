@@ -1,6 +1,7 @@
 package com.geaosu.wanandroid.activity;
 
 import android.annotation.SuppressLint;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationItemView;
@@ -9,6 +10,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.widget.RelativeLayout;
 
 import com.geaosu.wanandroid.R;
@@ -249,5 +251,22 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    public Point mPoint = new Point();
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if(ev.getAction() == MotionEvent.ACTION_DOWN){
+            mPoint.x = (int) ev.getRawX();
+            mPoint.y = (int) ev.getRawY();
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+
+    /**
+     * 获取point
+     * @return
+     */
+    public Point getPoint(){
+        return mPoint;
+    }
 
 }

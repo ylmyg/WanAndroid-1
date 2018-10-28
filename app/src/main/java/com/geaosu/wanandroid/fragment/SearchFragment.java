@@ -1,14 +1,20 @@
 package com.geaosu.wanandroid.fragment;
 
+import android.app.ActivityOptions;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.geaosu.wanandroid.BuildConfig;
 import com.geaosu.wanandroid.R;
+import com.geaosu.wanandroid.activity.SearchResultActivity;
 import com.geaosu.wanandroid.event.ClickEvent;
 import com.geaosu.wanandroid.event.DataEvent;
 import com.geaosu.wanandroid.event.LoginEvent;
@@ -20,11 +26,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class SearchFragment extends BaseFragment {
+public class SearchFragment extends BaseFragment implements View.OnClickListener {
 
     private ImageView ivBack;
     private TextView tvTitle;
     private ImageView ivMenu;
+
+
+    private EditText etText;
+    private ImageView ivClearText;
+    private ImageView ivSearch;
+    private ImageView ivClearHistory;
+    private AutoWrapLayout awlHistoryList;
+    private TextView tvNoHistory;
+    private AutoWrapLayout awlHotkeyList;
+    private TextView tvNoHotkey;
 
 
     private List<HotKeyModel.DataBean> mHotkeyList = new ArrayList<>();     //热词
@@ -46,7 +62,14 @@ public class SearchFragment extends BaseFragment {
 
     @Override
     protected void initView(View fragmentView) {
-
+        etText = (EditText) fragmentView.findViewById(R.id.etText);
+        ivClearText = (ImageView) fragmentView.findViewById(R.id.ivClearText);
+        ivSearch = (ImageView) fragmentView.findViewById(R.id.ivSearch);
+        ivClearHistory = (ImageView) fragmentView.findViewById(R.id.ivClearHistory);
+        awlHistoryList = (AutoWrapLayout) fragmentView.findViewById(R.id.awlHistoryList);
+        tvNoHistory = (TextView) fragmentView.findViewById(R.id.tvNoHistory);
+        awlHotkeyList = (AutoWrapLayout) fragmentView.findViewById(R.id.awlHotkeyList);
+        tvNoHotkey = (TextView) fragmentView.findViewById(R.id.tvNoHotkey);
 
     }
 
@@ -54,6 +77,9 @@ public class SearchFragment extends BaseFragment {
     protected void initViewListener() {
         mHotkeyClickListener = new HotkeyClickListener();
         mHistoryKeyClickListener = new HistoryKeyClickListener();
+
+        ivSearch.setOnClickListener(this);
+        ivClearText.setOnClickListener(this);
     }
 
     @Override
@@ -69,7 +95,8 @@ public class SearchFragment extends BaseFragment {
 
     @Override
     protected void initTitleListener() {
-
+        ivBack.setOnClickListener(this);
+        ivMenu.setOnClickListener(this);
     }
 
     @Override
@@ -95,8 +122,6 @@ public class SearchFragment extends BaseFragment {
                     if (hotKeyModel != null) {
                         List<HotKeyModel.DataBean> hotKeyList = hotKeyModel.getData();
                         if (hotKeyList != null && hotKeyList.size() > 0) {
-
-
                             if (hotKeyList != null && hotKeyList.size() > 0) {
                                 mHotkeyList.addAll(hotKeyList);
                                 tvNoHotkey.setVisibility(View.GONE);
@@ -123,7 +148,10 @@ public class SearchFragment extends BaseFragment {
                                         green = getNum255();
                                         blue = getNum255();
                                     }
-                                    TextView itemTv = (TextView) View.inflate(getActivity(), R.layout.item_wrap_tv, null);
+                                    //mActivity.getSystemService()
+                                    LayoutInflater inflater = (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                                    TextView itemTv = (TextView) inflater.inflate(R.layout.item_wrap_tv, null);
+                                    //TextView itemTv = (TextView) View.inflate(mActivity, R.layout.item_wrap_tv, null);
                                     itemTv.setText(mHotkeyList.get(index).getName());
                                     itemTv.setTag(index);
                                     itemTv.setTextColor(Color.rgb(red, green, blue));
@@ -154,6 +182,30 @@ public class SearchFragment extends BaseFragment {
 
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.ivBack:
+                break;
+            case R.id.ivMenu:
+                break;
+            case R.id.ivClearText:
+                etText.setText("");
+                break;
+            case R.id.ivSearch:
+                String searchStr = etText.getText().toString().trim();
+                Intent intent = new Intent(mActivity, SearchResultActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("searchStr", searchStr);
+                ;
+                intent.putExtra("data", bundle);
+                //mActivity.startActivity(intent);
+                //共享元素动画
+                mActivity.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(mActivity, ivSearch, "geaosuAnim").toBundle());
+                break;
+        }
+    }
+
 
     /**
      * 点击事件监听类
@@ -164,8 +216,6 @@ public class SearchFragment extends BaseFragment {
             String key = mHotkeyList.get((Integer) v.getTag()).getName();
             mHistoryList.add(key);
             notifyHistoryListData();
-            mPage = 1;
-            requestData(key, 1);
         }
     }
 
@@ -176,8 +226,6 @@ public class SearchFragment extends BaseFragment {
         @Override
         public void onClick(View v) {
             String key = mHistoryList.get((Integer) v.getTag());
-            mPage = 1;
-            requestData(key, 1);
         }
     }
 

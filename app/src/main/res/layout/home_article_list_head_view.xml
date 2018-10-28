@@ -9,6 +9,7 @@
         android:id="@+id/brBanner"
         android:layout_width="match_parent"
         android:layout_height="260dp"
+        android:layout_margin="6dp"
         app:indicator_drawable_selected="@drawable/shape_circle_fill" />
 
 </RelativeLayout>

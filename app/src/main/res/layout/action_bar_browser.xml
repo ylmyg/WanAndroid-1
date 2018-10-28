@@ -9,6 +9,7 @@
         android:id="@+id/ivBack"
         android:layout_width="48dp"
         android:layout_height="48dp"
+        android:background="@drawable/shape_action_bar_selector"
         android:padding="12dp"
         android:src="@drawable/back_white" />
 
@@ -29,6 +30,7 @@
         android:id="@+id/ivCollect"
         android:layout_width="48dp"
         android:layout_height="48dp"
+        android:background="@drawable/shape_action_bar_selector"
         android:padding="12dp"
         android:src="@drawable/collect_gray_001" />
 
@@ -36,6 +38,7 @@
         android:id="@+id/ivMenu"
         android:layout_width="48dp"
         android:layout_height="48dp"
+        android:background="@drawable/shape_action_bar_selector"
         android:padding="12dp"
         android:scaleType="centerCrop"
         android:src="@drawable/menu_white_001" />

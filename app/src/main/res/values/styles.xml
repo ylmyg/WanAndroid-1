@@ -8,4 +8,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="browserActivityPopupWindowAnim">
+        <!--显示动画-->
+        <item name="android:windowEnterAnimation">@anim/popshow_anim</item>
+        <!--退出动画-->
+        <item name="android:windowExitAnimation">@anim/pophidden_anim</item>
+    </style>
+
 </resources>

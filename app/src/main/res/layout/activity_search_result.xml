@@ -4,8 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
     android:orientation="vertical"
-    tools:context=".activity.BrowserActivity">
+    android:transitionName="geaosuAnim"
+    tools:context=".activity.SearchResultActivity">
 
     <include layout="@layout/action_bar_browser" />
 
@@ -18,9 +20,10 @@
         app:sliding_mode="top"
         app:top_max="140dp">
 
-        <WebView
-            android:id="@+id/wbContent"
+        <ImageView
             android:layout_width="match_parent"
+            android:background="#fff"
+            android:src="@drawable/home_green"
             android:layout_height="match_parent" />
 
     </lib.homhomlib.design.SlidingLayout>

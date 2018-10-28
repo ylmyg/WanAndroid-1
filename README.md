@@ -115,6 +115,15 @@
     20181025-周五: 第1次提交
             1. 新增搜索界面;
 
+    20181025-周六: 第1次提交
+            1. 新增首页文章列表长按菜单;
+            2. 首页文章列表长安菜单部分功能实现;
+
+    20181025-周日: 第1次提交
+            1. 新增浏览器界面右菜单;
+            2. 右菜单部分功能实现;
+            3. 首页布局改版, 新版UI超级好看(自认为比以前的好看);
+
 
 
 #### 申请的所有权限
@@ -204,7 +213,6 @@
 
             2. 用自己想用的功能:
                 * 判断网络状态
-
 
 
 
@@ -449,10 +457,78 @@
                    </lib.homhomlib.design.SlidingLayout>
                </LinearLayout>
 
+    4. FloatMenu
+            des: 仿微信的长按菜单
+            GitHub: https://github.com/JavaNoober/FloatMenu
+            依赖: implementation 'com.noober.floatmenu:common:1.0.4'
+            bbs: https://blog.csdn.net/qq_25412055/article/details/78866496
+            混淆:
+            使用:
+                1. 在MAinActivity中
+                    public Point mPoint = new Point();
+                    @Override
+                    public boolean dispatchTouchEvent(MotionEvent ev) {
+                        if(ev.getAction() == MotionEvent.ACTION_DOWN){
+                            mPoint.x = (int) ev.getRawX();
+                            mPoint.y = (int) ev.getRawY();
+                        }
+                        return super.dispatchTouchEvent(ev);
+                    }
+
+                    /**
+                     * 获取point
+                     * @return
+                     */
+                    public Point getPoint(){
+                        return mPoint;
+                    }
+
+                2. 在fragment中
+                    MainActivity mMainActivity = (MainActivity)getActivity();
+
+                    FloatMenu floatMenu = new FloatMenu(mMainActivity);
+                    floatMenu.items("复制标题", "复制链接", "分享", "在系统浏览器中打开");
+                    floatMenu.setOnItemClickListener(new FloatMenu.OnItemClickListener() {
+                        @Override
+                        public void onClick(View v, int position) \
+                            Log.d(getDebugTag(), "position = " + position + "  url = " + mBannerUrlList.get(position));
+                        }
+                    });
+                    floatMenu.show(mMainActivity.getPoint());
 
 
 
 
+
+
+#### 系统自带控件
+    1. PopupWindow
+        1. 创建PopupWindow对象实例;
+        2. 设置背景、注册事件监听器和添加动画;
+        3. 显示PopupWindow;
+
+        // 用于PopupWindow的View
+        View contentView=LayoutInflater.from(context).inflate(layoutRes, null, false);
+        // 创建PopupWindow对象，其中：
+        // 第一个参数是用于PopupWindow中的View，第二个参数是PopupWindow的宽度，
+        // 第三个参数是PopupWindow的高度，第四个参数指定PopupWindow能否获得焦点
+        PopupWindow window=new PopupWindow(contentView, 100, 100, true);
+        // 设置PopupWindow的背景
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        // 设置PopupWindow是否能响应外部点击事件
+        window.setOutsideTouchable(true);
+        // 设置PopupWindow是否能响应点击事件
+        window.setTouchable(true);
+        // 显示PopupWindow，其中：
+        // 第一个参数是PopupWindow的锚点，第二和第三个参数分别是PopupWindow相对锚点的x、y偏移
+        window.showAsDropDown(anchor, xoff, yoff);
+        // 或者也可以调用此方法显示PopupWindow，其中：
+        // 第一个参数是PopupWindow的父View，第二个参数是PopupWindow相对父View的位置，
+        // 第三和第四个参数分别是PopupWindow相对父View的x、y偏移
+        // window.showAtLocation(parent, gravity, x, y);
+
+
+007
 #### shape图形
     https://www.cnblogs.com/popfisher/p/6238119.html
 
@@ -463,9 +539,123 @@
 
 
 
+#### 项目中的动画: https://blog.csdn.net/huachao1001/article/details/51659963
+    1. 共享元素动画: 第一个界面的某个View与第二个界面的某个View之间的过渡效果动画;
+        * 效果图: https://img-blog.csdn.net/20160615130307559
+        * 使用
+            1. 在界面布局中的某个View属性中加上android:transitionName属性: android:transitionName="名称"
+                * 这里命名为: geaosuAnim, 两个transitionName属性的名称要一致;
+
+                    //第一个界面布局里的view中加上共享动画属性
+                    <?xml version="1.0" encoding="utf-8"?>
+                    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <View
+                            android:id="@+id/firstSharedView"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:background="#00cc00"
+                            android:onClick="onClick"
+                            android:transitionName="geaosuAnim" />
+                    </RelativeLayout>
+
+                    //第二个界面布局里的view中加上共享动画属性
+                    <?xml version="1.0" encoding="utf-8"?>
+                    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="300dp"
+                            android:layout_alignParentBottom="true"
+                            android:background="#00cc00"
+                            android:onClick="onClick"
+                            android:transitionName="geaosuAnim" />
+
+                    </RelativeLayout>
+
+            2. 调用startActivity方法:
+                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this, firstSharedView, "sharedView").toBundle());
+                    * public static ActivityOptions makeSceneTransitionAnimation(Activity activity, View sharedElement, String sharedElementName)方法:
+                        第一个参数Activity没啥解释的;
+                        第二个参数就是第一个Activity中的View对象;
+                        第三个参数就是两个Activity的View的 android:transitionName属性的值;
+
+                        注意: 该方法是api21中提供的, 需要将minSdkVersion的版本提升到21;
+
+
+    2. https://blog.csdn.net/djun100/article/details/14053653
 
 
 
+
+#### 总结
+    https://www.cnblogs.com/mrszhou/p/7101270.html
+
+    activity之间的数据传递
+        1. Intent
+            //传递数据
+            Intent intent = new Intent(this, XXX.class);
+            intent.putExtra("date", "geaosu");
+            startActivity(intent);
+
+            //接收数据
+            Intent i = getIntent();
+            String data = i.getStringExtra("date"));
+
+
+        2. Intent + Bundle
+            //传递数据
+            Intent intent = new Intent(this, XXX.class);
+
+            Bundle bundle = new Bundle();
+            bundle.putString("name", "geaosu");
+            bundle.putInt("mail", "geaosu@163.com");
+
+            intent.putExtras(bundle);
+            startActivity(intent);
+
+            //接受数据
+            Intent intent = getIntent();
+            Bundle bundle = intent.getExtras();
+            String name = bundle.getString("name");
+            String mail = bundle.getString("mail");
+
+
+    Fragment之间的数据传递
+
+
+
+    Fragment和activity之间的数据传递
+        1. activity传递数据给fragment:
+            //传递数据
+            HomeFragment homeFragment = new HomeFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("name", "geaosu");
+            homeFragment.setArguments(bundle);
+
+            //接收数据
+            https://www.cnblogs.com/mrszhou/p/7101270.html
+
+
+            //宿主activity中的getTitles()方法
+            public String getTitles(){
+                return "hello";
+            }
+
+            //Fragment中的onAttach方法
+                @Override
+                public void onAttach(Activity activity) {
+                    super.onAttach(activity);
+                    titles = ((MainActivity) activity).getTitles();
+                }
+            //通过强转成宿主activity，就可以获取到传递过来的数据
+
+
+        2. fragment传递数据给activity:
 
 
 

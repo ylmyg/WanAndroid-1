@@ -8,10 +8,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.geaosu.wanandroid.R;
 import com.geaosu.wanandroid.model.HomeArticleModel;
+import com.geaosu.wanandroid.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,7 +102,7 @@ public class ArticleListAdapter extends BaseAdapter {
             holder.ivCollect.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(mActivity, "还没登录呢", Toast.LENGTH_SHORT).show();
+                    ToastUtils.getInstance(mActivity).showToast("还没登录呢");
                 }
             });
         }

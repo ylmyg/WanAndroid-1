@@ -1,7 +1,9 @@
 package com.geaosu.wanandroid.fragment;
 
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,11 +12,11 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.geaosu.wanandroid.BuildConfig;
 import com.geaosu.wanandroid.R;
 import com.geaosu.wanandroid.activity.BrowserActivity;
+import com.geaosu.wanandroid.activity.MainActivity;
 import com.geaosu.wanandroid.adapter.ArticleListAdapter;
 import com.geaosu.wanandroid.event.ClickEvent;
 import com.geaosu.wanandroid.event.DataEvent;
@@ -24,8 +26,10 @@ import com.geaosu.wanandroid.model.HomeBannerModel;
 import com.geaosu.wanandroid.net.HomeArticleEngine;
 import com.geaosu.wanandroid.net.HomeBannerEngine;
 import com.geaosu.wanandroid.utils.GlideImageLoader;
+import com.geaosu.wanandroid.utils.ToastUtils;
 import com.jwenfeng.library.pulltorefresh.BaseRefreshListener;
 import com.jwenfeng.library.pulltorefresh.PullToRefreshLayout;
+import com.noober.menu.FloatMenu;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
@@ -35,6 +39,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends BaseFragment {
+
+    private MainActivity mMainActivity;
 
     private ImageView ivBack;
     private TextView tvTitle;
@@ -61,6 +67,7 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     protected void init(Bundle savedInstanceState) {
+        mMainActivity = (MainActivity) mActivity;
         Bundle bundle = mActivity.getIntent().getExtras();
         if (bundle != null) {
 
@@ -88,7 +95,7 @@ public class HomeFragment extends BaseFragment {
                         Log.d(getDebugTag(), "position = " + position + "   title = " + title + "   link = " + artliceLink);
                     mActivity.startActivity(intent);
                 } else {
-                    Toast.makeText(mActivity, "地址错误", Toast.LENGTH_SHORT).show();
+                    ToastUtils.getInstance(mActivity).showToast("地址错误");
                 }
             }
         });
@@ -96,9 +103,64 @@ public class HomeFragment extends BaseFragment {
         lvContent.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                return false;
+                final String link = mArticleList.get(position - 1).getLink();
+                final String title = mArticleList.get(position - 1).getTitle();
+
+                FloatMenu floatMenu = new FloatMenu(mActivity);
+                floatMenu.items("复制内容", "复制标题", "复制链接", "分享", "在系统浏览器中打开");
+                floatMenu.setOnItemClickListener(new FloatMenu.OnItemClickListener() {
+                    @Override
+                    public void onClick(View v, int position) {
+                        Log.d(getDebugTag(), "position = " + position + "  url = " + mBannerUrlList.get(position));
+                        switch (position) {
+                            case 0:
+//                                剪贴板相关→ClipboardUtils.java
+//                                copyText  : 复制文本到剪贴板
+//                                getText   : 获取剪贴板的文本
+//                                copyUri   : 复制uri到剪贴板
+//                                getUri    : 获取剪贴板的uri
+//                                copyIntent: 复制意图到剪贴板
+//                                getIntent : 获取剪贴板的意图
+                                //从API11开始android推荐使用android.content.ClipboardManager
+                                //为了兼容低版本我们这里使用旧版的android.text.ClipboardManager，虽然提示deprecated，但不影响使用。
+                                ClipboardManager cmContent = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
+                                cmContent.setText(title + ": " + link);// 将文本内容放到系统剪贴板里。
+                                ToastUtils.getInstance(mActivity).showToast("复制成功");
+                                break;
+                            case 1:
+                                ClipboardManager cmTitle = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
+                                cmTitle.setText(title);// 将文本内容放到系统剪贴板里。
+                                ToastUtils.getInstance(mActivity).showToast("复制成功");
+                                break;
+                            case 2:
+                                ClipboardManager cmLink = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
+                                cmLink.setText(link);// 将文本内容放到系统剪贴板里。
+                                ToastUtils.getInstance(mActivity).showToast("复制成功");
+                                break;
+                            case 3:
+                                ToastUtils.getInstance(mActivity).showToast("该功能即将上线");
+                                break;
+                            case 4:
+                                openSystemBrowserWithUrl(link);
+                                break;
+                        }
+                    }
+                });
+                floatMenu.show(mMainActivity.getPoint());
+                return true;
             }
         });
+    }
+
+    /**
+     * 打开系统自带浏览器, 并打开指定url
+     */
+    private void openSystemBrowserWithUrl(String path) {
+        Intent intent = new Intent();
+        intent.setAction("android.intent.action.VIEW");
+        Uri uri = Uri.parse(path);
+        intent.setData(uri);
+        startActivity(intent);
     }
 
     @Override
@@ -118,7 +180,7 @@ public class HomeFragment extends BaseFragment {
                     loadArticleData(mPager);
                 } else {
                     rfLayout.finishLoadMore();
-                    Toast.makeText(mActivity, "没有更多数据了", Toast.LENGTH_SHORT).show();
+                    ToastUtils.getInstance(mActivity).showToast("没有更多数据了");
                 }
             }
         });
@@ -133,7 +195,6 @@ public class HomeFragment extends BaseFragment {
         tvTitle.setText(getResources().getString(R.string.home));
         ivBack.setVisibility(View.GONE);
         ivMenu.setVisibility(View.GONE);
-
     }
 
     @Override
@@ -173,8 +234,7 @@ public class HomeFragment extends BaseFragment {
         switch (event.type) {
             case GET_HOME_BANNER_ERROR:
                 rfLayout.finishRefresh();
-                //todo showToast
-                Toast.makeText(mActivity, (String) event.data, Toast.LENGTH_SHORT).show();
+                ToastUtils.getInstance(mActivity).showToast((String) event.data.toString());
                 break;
             case GET_HOME_BANNER_SUCCESS:
                 rfLayout.finishRefresh();
@@ -203,7 +263,7 @@ public class HomeFragment extends BaseFragment {
             case GET_HOME_ARTICLE_ERROR:
                 rfLayout.finishRefresh();
                 rfLayout.finishLoadMore();
-                Toast.makeText(mActivity, (String) event.data, Toast.LENGTH_SHORT).show();
+                ToastUtils.getInstance(mActivity).showToast(event.data.toString());
                 break;
             case GET_HOME_ARTICLE_SUCCESS:
                 rfLayout.finishRefresh();
@@ -247,7 +307,6 @@ public class HomeFragment extends BaseFragment {
             mBanner.stopAutoPlay();
         }
     }
-
 
     /**
      * 设置头布局
@@ -303,4 +362,5 @@ public class HomeFragment extends BaseFragment {
     private void clearHeadView() {
         lvContent.removeHeaderView(mArticleListHeadView);
     }
+
 }
